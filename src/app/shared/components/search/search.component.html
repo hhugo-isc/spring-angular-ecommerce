@@ -1,0 +1,16 @@
+<form
+  (submit)="(search)"
+  class="form-header"
+  onsubmit="return false;"
+  method="GET"
+>
+  <input
+    type="text"
+    name="termino"
+    class="au-input au-input-xl"
+    placeholder="Search for data ..."
+    [(ngModel)]="termino"
+    (input)="search()"
+  />
+  <button class="au-btn-submit" type="submit">Search</button>
+</form>
