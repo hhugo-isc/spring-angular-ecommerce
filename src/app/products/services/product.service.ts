@@ -11,18 +11,22 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  public getProductList(categoryId: number): Observable<Product[]> {
-    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`;
-    return this.http
-      .get<GetResponse>(searchUrl)
-      .pipe(map((response) => response._embedded.products));
+  public getProductListPaginate(
+    page: number,
+    pageSize: number,
+    categoryId: number
+  ): Observable<GetResponse> {
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}&page=${page}&size=${pageSize}`;
+    return this.http.get<GetResponse>(searchUrl);
   }
 
-  public searchProducts(keyword: string): Observable<Product[]> {
-    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}`;
-    return this.http
-      .get<GetResponse>(searchUrl)
-      .pipe(map((response) => response._embedded.products));
+  public searchProductsPaginate(
+    page: number,
+    size: number,
+    keyword: string
+  ): Observable<GetResponse> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}&page=${page}&size=${size}`;
+    return this.http.get<GetResponse>(searchUrl);
   }
 
   public getProduct(productId: number): Observable<Product> {
@@ -34,5 +38,11 @@ export class ProductService {
 interface GetResponse {
   _embedded: {
     products: Product[];
+  };
+  page: {
+    number: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
   };
 }
